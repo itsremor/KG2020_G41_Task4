@@ -14,19 +14,21 @@ public class Helix implements IModel {
     private int countOfPoints;
     private float radius;
     private float step;
+    private boolean clockwise;
 
-    public Helix(int countOfTurns, int countOfPoints, float radius, float step) {
+    public Helix(int countOfTurns, int countOfPoints, float radius, float step, boolean clockwise) {
         this.countOfTurns = countOfTurns;
         this.countOfPoints = countOfPoints;
         this.radius = radius;
         this.step = step;
+        this.clockwise = clockwise;
     }
 
     @Override
     public List<PolyLine3D> getLines() {
         LinkedList<PolyLine3D> lines = new LinkedList<>();
 
-
+        int k = clockwise?-1:1;
 
         float currentZ = -0.5f * countOfTurns * step;
         float currentX;
@@ -37,7 +39,7 @@ public class Helix implements IModel {
         Vector3 previous;
         Vector3 twoPoints[];
 
-        float radIncr = (float)(2 * Math.PI / countOfPoints);
+        float radIncr = (float)(2 * Math.PI / countOfPoints * k);
         float zIncr = step / countOfPoints;
 
         for (int i = 0; i < this.countOfTurns; i++) {
