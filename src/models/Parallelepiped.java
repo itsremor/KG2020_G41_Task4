@@ -7,9 +7,9 @@ package models;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import kg2019examples_task4threedimensions.math.Vector3;
-import kg2019examples_task4threedimensions.third.IModel;
-import kg2019examples_task4threedimensions.third.PolyLine3D;
+import ru.cs.vsu.math.Vector3;
+import ru.cs.vsu.third.IModel;
+import ru.cs.vsu.third.PolyLine3D;
 
 /**
  * Описывает параллелипипед по двум диагональным точкам

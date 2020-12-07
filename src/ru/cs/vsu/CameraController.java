@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kg2019examples_task4threedimensions;
+package ru.cs.vsu;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -13,12 +13,12 @@ import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.SwingUtilities;
-import kg2019examples_task4threedimensions.math.Matrix4Factories;
-import kg2019examples_task4threedimensions.math.Vector3;
-import kg2019examples_task4threedimensions.math.Vector4;
-import kg2019examples_task4threedimensions.screen.ScreenConverter;
-import kg2019examples_task4threedimensions.screen.ScreenPoint;
-import kg2019examples_task4threedimensions.third.Camera;
+import ru.cs.vsu.math.Matrix4Factories;
+import ru.cs.vsu.math.Vector3;
+import ru.cs.vsu.math.Vector4;
+import ru.cs.vsu.screen.ScreenConverter;
+import ru.cs.vsu.screen.ScreenPoint;
+import ru.cs.vsu.third.Camera;
 
 /**
  *

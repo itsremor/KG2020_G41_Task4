@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kg2019examples_task4threedimensions.screen;
+package ru.cs.vsu.screen;
 
-import kg2019examples_task4threedimensions.math.Vector3;
+import ru.cs.vsu.math.Vector3;
 
 /**
  * Класс, предоставляющий функциональность конвертирования реальных координат в экранные

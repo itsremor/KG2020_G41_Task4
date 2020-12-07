@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kg2019examples_task4threedimensions.draw;
+package ru.cs.vsu.draw;
 
 import java.util.Collection;
-import kg2019examples_task4threedimensions.third.PolyLine3D;
+import ru.cs.vsu.third.PolyLine3D;
 
 /**
  * Интерфейс, описывающий в общем виде процесс рисования полилинии

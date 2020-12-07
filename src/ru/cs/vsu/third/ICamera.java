@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kg2019examples_task4threedimensions.third;
+package ru.cs.vsu.third;
 
-import kg2019examples_task4threedimensions.math.Vector3;
+import ru.cs.vsu.math.Vector3;
 
 /**
  * Описывает основную функциональность камеры - превращение координат 

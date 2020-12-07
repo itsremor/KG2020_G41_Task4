@@ -2,19 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kg2019examples_task4threedimensions;
+package ru.cs.vsu;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
-import kg2019examples_task4threedimensions.draw.IDrawer;
-import kg2019examples_task4threedimensions.draw.SimpleEdgeDrawer;
-import kg2019examples_task4threedimensions.math.Vector3;
-import kg2019examples_task4threedimensions.screen.ScreenConverter;
-import kg2019examples_task4threedimensions.third.Camera;
-import kg2019examples_task4threedimensions.third.Scene;
+
+import models.Helix;
+import ru.cs.vsu.draw.IDrawer;
+import ru.cs.vsu.draw.SimpleEdgeDrawer;
+import ru.cs.vsu.math.Vector3;
+import ru.cs.vsu.screen.ScreenConverter;
+import ru.cs.vsu.third.Camera;
+import ru.cs.vsu.third.Scene;
 import models.Parallelepiped;
 
 /**
@@ -35,11 +37,15 @@ public class DrawPanel extends JPanel
         camController = new CameraController(cam, sc);
         scene = new Scene(Color.WHITE.getRGB());
         scene.showAxes();
-        
+
+        /*
         scene.getModelsList().add(new Parallelepiped(
-                new Vector3(-0.4f, -0.4f, -0.4f), 
+                new Vector3(-0.4f, -0.4f, -0.4f),
                 new Vector3(0.4f, 0.4f, 0.4f)
         ));
+        */
+
+        scene.getModelsList().add(new Helix(10, 360, 0.3f, 0.4f));
         
         camController.addRepaintListener(this);
         addMouseListener(camController);

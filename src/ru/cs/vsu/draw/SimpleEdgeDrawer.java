@@ -2,18 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kg2019examples_task4threedimensions.draw;
+package ru.cs.vsu.draw;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
-import kg2019examples_task4threedimensions.math.Vector3;
-import kg2019examples_task4threedimensions.screen.ScreenConverter;
-import kg2019examples_task4threedimensions.screen.ScreenCoordinates;
-import kg2019examples_task4threedimensions.screen.ScreenPoint;
-import kg2019examples_task4threedimensions.third.PolyLine3D;
+import ru.cs.vsu.math.Vector3;
+import ru.cs.vsu.screen.ScreenConverter;
+import ru.cs.vsu.screen.ScreenCoordinates;
+import ru.cs.vsu.screen.ScreenPoint;
+import ru.cs.vsu.third.PolyLine3D;
 
 /**
  * Реализация рисователя полигонов с помощью рёбер.

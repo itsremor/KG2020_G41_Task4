@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package kg2019examples_task4threedimensions.third;
+package ru.cs.vsu.third;
 
-import kg2019examples_task4threedimensions.math.Matrix4;
-import kg2019examples_task4threedimensions.math.Vector3;
-import kg2019examples_task4threedimensions.math.Vector4;
+import ru.cs.vsu.math.Matrix4;
+import ru.cs.vsu.math.Vector3;
+import ru.cs.vsu.math.Vector4;
 
 /**
  * Описывает класс камеры, который хранит матрицы преобразования мировой системы координат в систему координат камеры.
