@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import models.Helix;
+import models.HelixUpgraded;
 import ru.cs.vsu.draw.IDrawer;
 import ru.cs.vsu.draw.SimpleEdgeDrawer;
 import ru.cs.vsu.math.Vector3;
@@ -45,8 +46,9 @@ public class DrawPanel extends JPanel
         ));
         */
 
-        scene.getModelsList().add(new Helix(10, 360, 0.3f, 0.1f, true));
-        
+        //scene.getModelsList().add(new Helix(3, 45, 1f, 1.5f, 0.05f, 10, true));
+        scene.getModelsList().add(new HelixUpgraded(3,6,1f,1.5f, 0.03f, 6, true));
+
         camController.addRepaintListener(this);
         addMouseListener(camController);
         addMouseMotionListener(camController);
