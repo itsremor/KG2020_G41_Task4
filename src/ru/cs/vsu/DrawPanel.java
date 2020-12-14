@@ -47,7 +47,7 @@ public class DrawPanel extends JPanel
         */
 
         //scene.getModelsList().add(new Helix(3, 45, 1f, 1.5f, 0.05f, 10, true));
-        scene.getModelsList().add(new HelixUpgraded(3,6,1f,1.5f, 0.03f, 6, true));
+        scene.getModelsList().add(new HelixUpgraded(3,36,1f,1.5f, 0.1f, 36, true));
 
         camController.addRepaintListener(this);
         addMouseListener(camController);

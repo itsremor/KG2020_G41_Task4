@@ -2,7 +2,8 @@ package ru.cs.vsu;
 
 public class TestClass {
     public static void main(String[] args) {
-        getSpiral(1, 1, 4, 360);
+        int[][] arr = new int[3][5];
+
     }
 
     public static void getSpiral(int countOfTurns, double radius, double step, int countPointsPerTurn){

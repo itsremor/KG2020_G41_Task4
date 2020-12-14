@@ -1,5 +1,6 @@
 package models;
 
+import ru.cs.vsu.math.Matrix3Rotation;
 import ru.cs.vsu.math.Vector3;
 import ru.cs.vsu.third.IModel;
 import ru.cs.vsu.third.PolyLine3D;
@@ -64,22 +65,30 @@ public class HelixUpgraded implements IModel {
 
         Vector3[][] section = new Vector3[carcass.length][countOfPointsPerTick];
 
+        currentRad = 0;
+        radIncr = (float)(2 * Math.PI / countOfPointsPerTick);
+
+        Matrix3Rotation myMatrix = new Matrix3Rotation();
 
 
+        for (int i = 0; i < section.length - 1; i++) {
+            currentRad = 0;
+            for (int j = 0; j < countOfPointsPerTick; j++) {
+                currentX = carcass[i].getX() + (float)Math.cos(currentRad) * thickness;
+                currentY = carcass[i].getY() + (float)Math.sin(currentRad) * thickness;
+                currentZ = carcass[i].getZ();
 
+                section[i][j] = new Vector3(currentX, currentY, currentZ);
+                currentRad += radIncr;
+            }
+        }
 
-        currentX = 0;
-        currentY = 0;
-        currentZ = 0;
-
-        for (int i = 0; i < countOfPointsPerTick; i++) {
-
+        for (int i = 0; i < section.length - 1; i++) {
+            lines.add(new PolyLine3D(Arrays.asList(section[i]), true));
         }
 
         //мы сами строим окружность для крайних точек
-        for (int i = 1; i < carcass.length - 1; i++) {
 
-        }
 
 
         return lines;
