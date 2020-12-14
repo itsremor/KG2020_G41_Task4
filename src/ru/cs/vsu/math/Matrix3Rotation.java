@@ -8,14 +8,29 @@ public class Matrix3Rotation {
     }
 
     public void initXMatrix(){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.matrix[i][j] = 0;
+            }
+        }
         this.matrix[0][0] = 1;
     }
 
     public void initYMatrix(){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.matrix[i][j] = 0;
+            }
+        }
         this.matrix[1][1] = 1;
     }
 
     public void initZMatrix(){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.matrix[i][j] = 0;
+            }
+        }
         this.matrix[2][2] = 1;
     }
 

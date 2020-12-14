@@ -68,7 +68,7 @@ public class HelixUpgraded implements IModel {
         currentRad = 0;
         radIncr = (float)(2 * Math.PI / countOfPointsPerTick);
 
-        Matrix3Rotation myMatrix = new Matrix3Rotation();
+
 
 
         for (int i = 0; i < section.length - 1; i++) {
@@ -82,6 +82,11 @@ public class HelixUpgraded implements IModel {
                 currentRad += radIncr;
             }
         }
+
+        Matrix3Rotation matrix = new Matrix3Rotation();
+        matrix.initXMatrix();
+        matrix.setXMatrix((float)(2*Math.PI));
+
 
         for (int i = 0; i < section.length - 1; i++) {
             lines.add(new PolyLine3D(Arrays.asList(section[i]), true));
