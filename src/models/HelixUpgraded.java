@@ -65,11 +65,7 @@ public class HelixUpgraded implements IModel {
 
         Vector3[][] section = new Vector3[carcass.length][countOfPointsPerTick];
 
-        currentRad = 0;
         radIncr = (float)(2 * Math.PI / countOfPointsPerTick);
-
-
-
 
         for (int i = 0; i < section.length - 1; i++) {
             currentRad = 0;
@@ -83,10 +79,9 @@ public class HelixUpgraded implements IModel {
             }
         }
 
-        Matrix3Rotation matrix = new Matrix3Rotation();
-        matrix.initXMatrix();
-        matrix.setXMatrix((float)(2*Math.PI));
-
+        float angleX = Matrix3Rotation.getAngleOX(carcass[0], carcass[1]);
+        float angleY = Matrix3Rotation.getAngleOY(carcass[0], carcass[1]);
+        float angleZ = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
 
         for (int i = 0; i < section.length - 1; i++) {
             lines.add(new PolyLine3D(Arrays.asList(section[i]), true));
