@@ -106,14 +106,14 @@ public class Matrix3Rotation {
 
     public static Vector3 rotationOnX(Vector3 v, float angle){
         float newX = v.getX();
-        float newY = (float)(v.getY() * Math.cos(angle) + v.getZ() * Math.sin(angle));
+        float newY = (float)(v.getY() * Math.cos(angle) - v.getZ() * Math.sin(angle));
         float newZ = (float)(v.getY() * Math.sin(angle) + v.getZ() * Math.cos(angle));
 
         return new Vector3(newX, newY, newZ);
     }
 
     public static Vector3 rotationOnY(Vector3 v, float angle){
-        float newX = (float)(v.getX() * Math.cos(angle) + v.getZ() * Math.sin(angle));
+        float newX = (float)(v.getX() * Math.cos(angle) - v.getZ() * Math.sin(angle));
         float newY = v.getY();
         float newZ = (float)(v.getX() * Math.sin(angle) + v.getZ() * Math.cos(angle));
 
@@ -121,11 +121,13 @@ public class Matrix3Rotation {
     }
 
     public static Vector3 rotationOnZ(Vector3 v, float angle){
-        float newX = (float)(v.getX() * Math.cos(angle) + v.getY() * Math.sin(angle));
+        float newX = (float)(v.getX() * Math.cos(angle) - v.getY() * Math.sin(angle));
         float newY = (float)(v.getX() * Math.sin(angle) + v.getY() * Math.cos(angle));
         float newZ = v.getZ();
 
         return new Vector3(newX, newY, newZ);
     }
+
+    ;
 
 }

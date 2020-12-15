@@ -34,7 +34,7 @@ public class HelixUpgraded implements IModel {
     @Override
     public List<PolyLine3D> getLines() {
         LinkedList<PolyLine3D> lines = new LinkedList<>();
-        Vector3[] carcass = new Vector3[countOfTurns * countOfPointsPerTurn];
+        Vector3[] carcass = new Vector3[countOfTurns * (countOfPointsPerTurn + 1)];
 
         int koef = clockwise? -1 : 1;
 
@@ -51,7 +51,7 @@ public class HelixUpgraded implements IModel {
         //внешний цикл i отвечает за кол-во витков
         for (int i = 0; i < this.countOfTurns; i++) {
             //внутренний цикл j отвечает за построение каждого витка
-            for (int j = 0; j < countOfPointsPerTurn; j++) {
+            for (int j = 0; j <= countOfPointsPerTurn; j++) {
                 currentX = (float) (Math.cos(currentRad) * radius);
                 currentY = (float) (Math.sin(currentRad) * radius);
 
@@ -61,12 +61,14 @@ public class HelixUpgraded implements IModel {
                 counter++;
             }
         }
+
         lines.add(new PolyLine3D(Arrays.asList(carcass), false));
 
         Vector3[][] section = new Vector3[carcass.length][countOfPointsPerTick];
 
         radIncr = (float)(2 * Math.PI / countOfPointsPerTick);
 
+/*
         for (int i = 0; i < section.length - 1; i++) {
             currentRad = 0;
             for (int j = 0; j < countOfPointsPerTick; j++) {
@@ -79,9 +81,38 @@ public class HelixUpgraded implements IModel {
             }
         }
 
+ */
+
+
         float angleX = Matrix3Rotation.getAngleOX(carcass[0], carcass[1]);
         float angleY = Matrix3Rotation.getAngleOY(carcass[0], carcass[1]);
         float angleZ = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
+
+        Vector3 temp;
+
+        for (int i = 0; i < section.length - 1; i++) {
+            currentRad = 0;
+
+            for (int j = 0; j < countOfPointsPerTick; j++) {
+                currentX = (float)Math.cos(currentRad) * thickness;
+                currentY = (float)Math.sin(currentRad) * thickness;
+                currentZ = 0;
+                temp = new Vector3(currentX, currentY, currentZ);
+
+                temp = Matrix3Rotation.rotationOnY(temp, angleY);
+                temp = Matrix3Rotation.rotationOnX(temp, angleX);
+                //temp = Matrix3Rotation.rotationOnZ(temp, angleZ);
+
+
+
+                temp = new Vector3(temp.getX() + carcass[i].getX(), temp.getY() + carcass[i].getY(),
+                        temp.getZ() + carcass[i].getZ());
+
+                section[i][j] = new Vector3(temp.getX(), temp.getY(), temp.getZ());
+                currentRad += radIncr;
+            }
+        }
+
 
         for (int i = 0; i < section.length - 1; i++) {
             lines.add(new PolyLine3D(Arrays.asList(section[i]), true));
