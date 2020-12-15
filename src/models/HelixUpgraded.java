@@ -62,36 +62,21 @@ public class HelixUpgraded implements IModel {
             }
         }
 
-        lines.add(new PolyLine3D(Arrays.asList(carcass), false));
+        //lines.add(new PolyLine3D(Arrays.asList(carcass), false));
 
         Vector3[][] section = new Vector3[carcass.length][countOfPointsPerTick];
 
         radIncr = (float)(2 * Math.PI / countOfPointsPerTick);
 
-/*
-        for (int i = 0; i < section.length - 1; i++) {
-            currentRad = 0;
-            for (int j = 0; j < countOfPointsPerTick; j++) {
-                currentX = carcass[i].getX() + (float)Math.cos(currentRad) * thickness;
-                currentY = carcass[i].getY() + (float)Math.sin(currentRad) * thickness;
-                currentZ = carcass[i].getZ();
-
-                section[i][j] = new Vector3(currentX, currentY, currentZ);
-                currentRad += radIncr;
-            }
-        }
-
- */
-
-
         float angleX = Matrix3Rotation.getAngleOX(carcass[0], carcass[1]);
         float angleY = Matrix3Rotation.getAngleOY(carcass[0], carcass[1]);
-        float angleZ = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
+        float angleZ; // = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
 
         Vector3 temp;
 
-        for (int i = 0; i < section.length - 1; i++) {
+        for (int i = 0; i < section.length; i++) {
             currentRad = 0;
+            angleZ = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
 
             for (int j = 0; j < countOfPointsPerTick; j++) {
                 currentX = (float)Math.cos(currentRad) * thickness;
@@ -101,7 +86,7 @@ public class HelixUpgraded implements IModel {
 
                 temp = Matrix3Rotation.rotationOnY(temp, angleY);
                 temp = Matrix3Rotation.rotationOnX(temp, angleX);
-                //temp = Matrix3Rotation.rotationOnZ(temp, angleZ);
+                temp = Matrix3Rotation.rotationOnZ(temp, angleZ);
 
                 section[i][j] = new Vector3(temp.getX() + carcass[i].getX(), temp.getY() + carcass[i].getY(),
                         temp.getZ() + carcass[i].getZ());
@@ -110,14 +95,23 @@ public class HelixUpgraded implements IModel {
             }
         }
 
-
         for (int i = 0; i < section.length - 1; i++) {
-            lines.add(new PolyLine3D(Arrays.asList(section[i]), true));
+            for (int j = 0; j < section[i].length - 1; j++) {
+
+                lines.add(new PolyLine3D(Arrays.asList(new Vector3[]{
+                        new Vector3(section[i][j].getX(), section[i][j].getY(), section[i][j].getZ()),
+                        new Vector3(section[i+1][j].getX(), section[i+1][j].getY(), section[i+1][j].getZ()),
+                        new Vector3(section[i+1][j+1].getX(), section[i+1][j+1].getY(), section[i+1][j+1].getZ()),
+                        new Vector3(section[i][j+1].getX(), section[i][j+1].getY(), section[i][j+1].getZ())
+                }), true));
+            }
+            lines.add(new PolyLine3D(Arrays.asList(new Vector3[]{
+                    new Vector3(section[i][0].getX(), section[i][0].getY(), section[i][0].getZ()),
+                    new Vector3(section[i+1][0].getX(), section[i+1][0].getY(), section[i+1][0].getZ()),
+                    new Vector3(section[i+1][section[i].length - 1].getX(), section[i+1][section[i].length - 1].getY(), section[i+1][section[i].length - 1].getZ()),
+                    new Vector3(section[i][section[i].length - 1].getX(), section[i][section[i].length - 1].getY(), section[i][section[i].length - 1].getZ())
+            }), true));
         }
-
-        //мы сами строим окружность для крайних точек
-
-
 
         return lines;
     }
