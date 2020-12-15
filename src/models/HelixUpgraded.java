@@ -103,12 +103,9 @@ public class HelixUpgraded implements IModel {
                 temp = Matrix3Rotation.rotationOnX(temp, angleX);
                 //temp = Matrix3Rotation.rotationOnZ(temp, angleZ);
 
-
-
-                temp = new Vector3(temp.getX() + carcass[i].getX(), temp.getY() + carcass[i].getY(),
+                section[i][j] = new Vector3(temp.getX() + carcass[i].getX(), temp.getY() + carcass[i].getY(),
                         temp.getZ() + carcass[i].getZ());
 
-                section[i][j] = new Vector3(temp.getX(), temp.getY(), temp.getZ());
                 currentRad += radIncr;
             }
         }
