@@ -23,6 +23,10 @@ public class HelixUpgradedPlus implements IModel {
     public HelixUpgradedPlus(int countOfTurns, int countOfPointsPerTurn, float radius, float step, float thickness,
                          int countOfPointsPerTick, boolean clockwise,
                              FuncTypes turnsType, FuncTypes radiusType) {
+
+        //toDO передаваться будет IFunction в качестве аргумента (там где FTypes) и уже она будет вызывать compute
+        //Идеальный вариант - когда пользователь
+
         this.countOfTurns = countOfTurns;
         this.countOfPointsPerTurn = countOfPointsPerTurn;
         this.radius = radius;
@@ -58,6 +62,9 @@ public class HelixUpgradedPlus implements IModel {
 
 
 
+        //toDO создаётся интерфейс IFunction, в который передаётся число T, которое будет являться параметром, от 0 до 1 - то есть, процент того, сколько точек пружины уже сформировано
+        //todo и в зависимости от этого возвращается число, которое будет являться радиусом (в случае раст.витк. будет возвращаться раст.)
+        //toDo Много функций, которые строятся в зависимости от T
         switch (radiusType){
             case DEFAULT:{
                 float radFIncr = (float) Math.PI / (countOfPointsPerTurn * countOfTurns);
@@ -79,6 +86,7 @@ public class HelixUpgradedPlus implements IModel {
                         counter++;
                     }
                 }
+                break;
             }
 
             case SINUS: {
@@ -177,8 +185,10 @@ public class HelixUpgradedPlus implements IModel {
                 temp = new Vector3(currentX, currentY, currentZ);
 
                 temp = Matrix3Rotation.rotationOnY(temp, angleY);
-                temp = Matrix3Rotation.rotationOnX(temp, angleX);
                 temp = Matrix3Rotation.rotationOnZ(temp, angleZ);
+
+                //temp = Matrix3Rotation.rotationOnX(temp, angleX);
+
 
                 section[i][j] = new Vector3(temp.getX() + carcass[i].getX(), temp.getY() + carcass[i].getY(),
                         temp.getZ() + carcass[i].getZ());

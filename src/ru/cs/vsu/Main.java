@@ -4,6 +4,8 @@
  */
 package ru.cs.vsu;
 
+import ru.cs.vsu.draw.DrawPanel;
+
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 

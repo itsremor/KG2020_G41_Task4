@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.cs.vsu;
+package ru.cs.vsu.draw;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import models.*;
+import ru.cs.vsu.CameraController;
 import ru.cs.vsu.draw.IDrawer;
 import ru.cs.vsu.draw.SimpleEdgeDrawer;
 import ru.cs.vsu.math.Vector3;
@@ -46,7 +47,7 @@ public class DrawPanel extends JPanel
 
         //scene.getModelsList().add(new Helix(3, 45, 1f, 1.5f, 0.05f, 10, true));
         //scene.getModelsList().add(new HelixUpgraded(2,18,1f,1f, 0.1f, 6, true));
-        scene.getModelsList().add(new HelixUpgradedPlus(5,36,1f,1f, 0.1f, 6, true, FuncTypes.COSINUS, FuncTypes.COSINUS));
+        scene.getModelsList().add(new HelixUpgradedPlus(5,36,1f,1f, 0.1f, 6, true, FuncTypes.COSINUS, FuncTypes.SINUS));
 
         camController.addRepaintListener(this);
         addMouseListener(camController);
