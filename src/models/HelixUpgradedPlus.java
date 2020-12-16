@@ -5,13 +5,11 @@ import ru.cs.vsu.math.Vector3;
 import ru.cs.vsu.third.IModel;
 import ru.cs.vsu.third.PolyLine3D;
 
-import java.lang.invoke.VarHandle;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HelixUpgraded implements IModel {
-
+public class HelixUpgradedPlus implements IModel {
     private int countOfTurns;
     private int countOfPointsPerTurn;
     private float radius;
@@ -19,16 +17,21 @@ public class HelixUpgraded implements IModel {
     private boolean clockwise;
     private float thickness;
     private int countOfPointsPerTick;
+    private FuncTypes turnsType;
+    private FuncTypes radiusType;
 
-    public HelixUpgraded(int countOfTurns, int countOfPointsPerTurn, float radius, float step, float thickness,
-                 int countOfPointsPerTick, boolean clockwise) {
+    public HelixUpgradedPlus(int countOfTurns, int countOfPointsPerTurn, float radius, float step, float thickness,
+                         int countOfPointsPerTick, boolean clockwise,
+                             FuncTypes turnsType, FuncTypes radiusType) {
         this.countOfTurns = countOfTurns;
         this.countOfPointsPerTurn = countOfPointsPerTurn;
-        this.radius = radius + thickness;
-        this.step = step + thickness * 2;
+        this.radius = radius;
+        this.step = step;
         this.clockwise = clockwise;
         this.thickness = thickness;
         this.countOfPointsPerTick = countOfPointsPerTick;
+        this.turnsType = turnsType;
+        this.radiusType = radiusType;
     }
 
     @Override
@@ -46,14 +49,102 @@ public class HelixUpgraded implements IModel {
         int counter = 0;
 
         float radIncr = (float)(2 * Math.PI / countOfPointsPerTurn * koef);
-        float zIncr = step / countOfPointsPerTurn;
+        float zIncr = step / countOfPointsPerTurn + thickness * 2 / countOfPointsPerTurn;
 
+
+        /**
+         Эта часть кода нужна будет для применения функций к расстоянию между витками
+         */
+
+
+
+        switch (radiusType){
+            case DEFAULT:{
+                float radFIncr = (float) Math.PI / (countOfPointsPerTurn * countOfTurns);
+                float radFCur = 0;
+                float curRad;
+
+                for (int i = 0; i < this.countOfTurns; i++) {
+                    //внутренний цикл j отвечает за построение каждого витка
+                    for (int j = 0; j <= countOfPointsPerTurn; j++) {
+
+                        currentX = (float) (Math.cos(currentRad) * (radius + thickness));
+                        currentY = (float) (Math.sin(currentRad) * (radius + thickness));
+
+                        carcass[counter] = new Vector3(currentX, currentY, currentZ);
+                        currentRad += radIncr;
+
+                        currentZ += zIncr;
+
+                        counter++;
+                    }
+                }
+            }
+
+            case SINUS: {
+                float radFIncr = (float) Math.PI / (countOfPointsPerTurn * countOfTurns);
+                float radFCur = 0;
+                float curRad;
+
+                for (int i = 0; i < this.countOfTurns; i++) {
+                    //внутренний цикл j отвечает за построение каждого витка
+                    for (int j = 0; j <= countOfPointsPerTurn; j++) {
+                        curRad = (float) (radius * Math.sin(radFCur));
+                        currentX = (float) (Math.cos(currentRad) * (curRad + thickness));
+                        currentY = (float) (Math.sin(currentRad) * (curRad + thickness));
+
+                        carcass[counter] = new Vector3(currentX, currentY, currentZ);
+                        currentRad += radIncr;
+
+                        currentZ += zIncr;
+
+                        counter++;
+
+                        radFCur += radFIncr;
+                    }
+                }
+                break;
+            }
+
+            case COSINUS: {
+                float radFIncr = (float) Math.PI / (countOfPointsPerTurn * countOfTurns);
+                float radFCur = 0;
+                float curRad;
+
+                for (int i = 0; i < this.countOfTurns; i++) {
+                    //внутренний цикл j отвечает за построение каждого витка
+                    for (int j = 0; j <= countOfPointsPerTurn; j++) {
+                        curRad = (float) (radius * Math.cos(radFCur));
+                        currentX = (float) (Math.cos(currentRad) * (curRad + thickness));
+                        currentY = (float) (Math.sin(currentRad) * (curRad + thickness));
+
+                        carcass[counter] = new Vector3(currentX, currentY, currentZ);
+                        currentRad += radIncr;
+
+                        currentZ += zIncr;
+
+                        counter++;
+
+                        radFCur += radFIncr;
+                    }
+                }
+                break;
+            }
+        }
+
+
+
+
+
+
+        /*
         //внешний цикл i отвечает за кол-во витков
         for (int i = 0; i < this.countOfTurns; i++) {
             //внутренний цикл j отвечает за построение каждого витка
             for (int j = 0; j <= countOfPointsPerTurn; j++) {
-                currentX = (float) (Math.cos(currentRad) * radius);
-                currentY = (float) (Math.sin(currentRad) * radius);
+
+                currentX = (float) (Math.cos(currentRad) * (radius + thickness));
+                currentY = (float) (Math.sin(currentRad) * (radius + thickness));
 
                 carcass[counter] = new Vector3(currentX, currentY, currentZ);
                 currentRad += radIncr;
@@ -62,6 +153,7 @@ public class HelixUpgraded implements IModel {
             }
         }
 
+        */
         //lines.add(new PolyLine3D(Arrays.asList(carcass), false));
 
         Vector3[][] section = new Vector3[carcass.length][countOfPointsPerTick];

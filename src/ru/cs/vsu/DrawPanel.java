@@ -10,15 +10,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
-import models.Helix;
-import models.HelixUpgraded;
+import models.*;
 import ru.cs.vsu.draw.IDrawer;
 import ru.cs.vsu.draw.SimpleEdgeDrawer;
 import ru.cs.vsu.math.Vector3;
 import ru.cs.vsu.screen.ScreenConverter;
 import ru.cs.vsu.third.Camera;
 import ru.cs.vsu.third.Scene;
-import models.Parallelepiped;
 
 /**
  *
@@ -47,7 +45,8 @@ public class DrawPanel extends JPanel
         */
 
         //scene.getModelsList().add(new Helix(3, 45, 1f, 1.5f, 0.05f, 10, true));
-        scene.getModelsList().add(new HelixUpgraded(2,18,1f,1f, 0.1f, 6, true));
+        //scene.getModelsList().add(new HelixUpgraded(2,18,1f,1f, 0.1f, 6, true));
+        scene.getModelsList().add(new HelixUpgradedPlus(5,36,1f,1f, 0.1f, 6, true, FuncTypes.COSINUS, FuncTypes.COSINUS));
 
         camController.addRepaintListener(this);
         addMouseListener(camController);
