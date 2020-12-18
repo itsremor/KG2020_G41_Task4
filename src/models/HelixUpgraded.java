@@ -68,20 +68,21 @@ public class HelixUpgraded implements IModel {
 
         radIncr = (float)(2 * Math.PI / countOfPointsPerTick);
 
-        float angleX = Matrix3Rotation.getAngleOX(carcass[0], carcass[1]);
-        float angleY = Matrix3Rotation.getAngleOY(carcass[0], carcass[1]);
-        float angleZ; // = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
+        float angleX = Matrix3Rotation.getAngleOX(carcass[0], carcass[1]) * koef;
+        float angleY = Matrix3Rotation.getAngleOY(carcass[0], carcass[1]) * koef;
 
+        float angleZ = 0; // = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
+        float angleZIncr = (float)(Math.PI * 2 / (carcass.length / countOfTurns - 1)) * koef;
         Vector3 temp;
 
         for (int i = 0; i < section.length; i++) {
             currentRad = 0;
-            angleZ = Matrix3Rotation.getAngleOZ(carcass[0], carcass[1]);
 
             for (int j = 0; j < countOfPointsPerTick; j++) {
-                currentX = (float)Math.cos(currentRad) * thickness;
-                currentY = (float)Math.sin(currentRad) * thickness;
-                currentZ = 0;
+                currentX = (float) Math.sin(currentRad) * thickness;
+                currentY = 0;
+                currentZ = (float) Math.cos(currentRad) * thickness;
+
                 temp = new Vector3(currentX, currentY, currentZ);
 
                 temp = Matrix3Rotation.rotationOnY(temp, angleY);
@@ -93,6 +94,8 @@ public class HelixUpgraded implements IModel {
 
                 currentRad += radIncr;
             }
+
+            angleZ += angleZIncr;
         }
 
         for (int i = 0; i < section.length - 1; i++) {
