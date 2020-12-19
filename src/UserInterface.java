@@ -2,35 +2,97 @@ import javax.swing.*;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import functions.*;
+import models.HelixUpgradedFunc;
 import ru.cs.vsu.draw.DrawPanel;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UserInterface extends JFrame {
     private JPanel mainPanel;
     private JPanel secondPanel;
     private DrawPanel drawPanel1;
     private JButton createHelix;
-    private JSpinner turns;
-    private JComboBox helixFunc;
-    private JSlider radiusSize;
-    private JSlider tickSize;
-    private JComboBox turnsFunc;
-    private JSpinner countOfPoints;
-
-    private float radius;
-    private int pointsCount;
-    private int turnsCount;
+    private JSpinner turnsSpinner;
+    private JComboBox radiusFunc;
+    private JComboBox stepFunc;
+    private JSpinner countOfPointsSpinner;
+    private JSpinner radiusSpinner;
+    private JSpinner stepSpinner;
+    private JSpinner thicknessSpinner;
+    private JCheckBox clockwise;
 
     public UserInterface() {
-
         $$$setupUI$$$();
         setContentPane(mainPanel);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setSize(1000, 800);
 
+        stepSpinner.setModel(new SpinnerNumberModel(0.1f, 0.01f, 2, 0.01f));
+        radiusSpinner.setModel(new SpinnerNumberModel(1, 0.01f, 5, 0.05f));
+        countOfPointsSpinner.setModel(new SpinnerNumberModel(6, 6, 180, 6));
+        thicknessSpinner.setModel(new SpinnerNumberModel(0.5f, 0.01f, 1, 0.01f));
+        turnsSpinner.setModel(new SpinnerNumberModel(3, 1, 10, 1));
 
+        radiusFunc.addItem(IFunctionENUM.DEFAULT);
+        radiusFunc.addItem(IFunctionENUM.SINUS);
+        radiusFunc.addItem(IFunctionENUM.COSINUS);
+
+        stepFunc.addItem(IFunctionENUM.DEFAULT);
+        stepFunc.addItem(IFunctionENUM.SINUS);
+        stepFunc.addItem(IFunctionENUM.COSINUS);
+
+        createHelix.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IFunction fStep = null;
+                IFunction fRad = null;
+
+                switch ((IFunctionENUM) stepFunc.getSelectedItem()) {
+                    case SINUS: {
+                        fStep = new SinusFunction();
+                        break;
+                    }
+                    case COSINUS: {
+                        fStep = new CosinusFunction();
+                        break;
+                    }
+                    case DEFAULT: {
+                        fStep = new DefaultFunction();
+                        break;
+                    }
+                }
+
+                switch ((IFunctionENUM) radiusFunc.getSelectedItem()) {
+                    case SINUS: {
+                        fRad = new SinusFunction();
+                        break;
+                    }
+                    case COSINUS: {
+                        fRad = new CosinusFunction();
+                        break;
+                    }
+                    case DEFAULT: {
+                        fRad = new DefaultFunction();
+                        break;
+                    }
+                }
+                int countOfTurns = (int) turnsSpinner.getValue();
+                int countOfPointsPerTurn = (int) countOfPointsSpinner.getValue();
+                float radius = (float) (double) radiusSpinner.getValue();
+                float step = (float) (double) stepSpinner.getValue();
+                boolean clockwiseValue = clockwise.isSelected();
+                float thickness = (float) (double) thicknessSpinner.getValue();
+                int countOfPointsPerTick = (int) countOfPointsSpinner.getValue();
+
+                drawPanel1.setHelix(new HelixUpgradedFunc(countOfTurns, countOfPointsPerTurn, 1,
+                        step, thickness, countOfPointsPerTick, clockwiseValue, fRad, fStep));
+                drawPanel1.repaint();
+            }
+        });
     }
 
     private void createUIComponents() {
@@ -50,24 +112,50 @@ public class UserInterface extends JFrame {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         secondPanel = new JPanel();
-        secondPanel.setLayout(new GridLayoutManager(5, 2, new Insets(0, 0, 0, 0), -1, -1));
+        secondPanel.setLayout(new GridLayoutManager(10, 2, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(secondPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        secondPanel.add(drawPanel1, new GridConstraints(0, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(100, 100), new Dimension(800, 800), new Dimension(2000, 2000), 0, false));
+        secondPanel.add(drawPanel1, new GridConstraints(0, 0, 4, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(100, 100), new Dimension(800, 800), new Dimension(2000, 2000), 0, false));
         createHelix = new JButton();
         createHelix.setText("Создать пружинку");
-        secondPanel.add(createHelix, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        turns = new JSpinner();
-        secondPanel.add(turns, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        helixFunc = new JComboBox();
-        secondPanel.add(helixFunc, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        radiusSize = new JSlider();
-        secondPanel.add(radiusSize, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        tickSize = new JSlider();
-        secondPanel.add(tickSize, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        turnsFunc = new JComboBox();
-        secondPanel.add(turnsFunc, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        countOfPoints = new JSpinner();
-        secondPanel.add(countOfPoints, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        secondPanel.add(createHelix, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        turnsSpinner = new JSpinner();
+        secondPanel.add(turnsSpinner, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        radiusFunc = new JComboBox();
+        secondPanel.add(radiusFunc, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        stepFunc = new JComboBox();
+        secondPanel.add(stepFunc, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        countOfPointsSpinner = new JSpinner();
+        secondPanel.add(countOfPointsSpinner, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        radiusSpinner = new JSpinner();
+        secondPanel.add(radiusSpinner, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        stepSpinner = new JSpinner();
+        secondPanel.add(stepSpinner, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        thicknessSpinner = new JSpinner();
+        secondPanel.add(thicknessSpinner, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setText("Кол-во витков");
+        secondPanel.add(label1, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label2 = new JLabel();
+        label2.setText("Толщина");
+        secondPanel.add(label2, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label3 = new JLabel();
+        label3.setText("Кол-во точек");
+        secondPanel.add(label3, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        label4.setText("Радиус");
+        secondPanel.add(label4, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label5 = new JLabel();
+        label5.setText("Расстояние между витками");
+        secondPanel.add(label5, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label6 = new JLabel();
+        label6.setText("Ф-ция витков");
+        secondPanel.add(label6, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label7 = new JLabel();
+        label7.setText("Ф-ция радиуса");
+        secondPanel.add(label7, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        clockwise = new JCheckBox();
+        clockwise.setText("По часовой стрелке");
+        secondPanel.add(clockwise, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

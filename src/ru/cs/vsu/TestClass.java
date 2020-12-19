@@ -2,8 +2,10 @@ package ru.cs.vsu;
 
 public class TestClass {
     public static void main(String[] args) {
-        int[][] arr = new int[3][5];
+        int a = 6;
+        int b = 9;
 
+        System.out.println((float) a / b);
     }
 
     public static void getSpiral(int countOfTurns, double radius, double step, int countPointsPerTurn){
