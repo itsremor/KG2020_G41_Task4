@@ -28,7 +28,7 @@ public class HelixUpgradedFunc implements IModel {
                              IFunction radiusFunc, IFunction stepFunc) {
         this.countOfTurns = countOfTurns;
         this.countOfPointsPerTurn = countOfPointsPerTurn;
-        this.radius = radius + thickness;
+        this.radius = radius;
         this.step = step;
         this.clockwise = clockwise;
         this.thickness = thickness;
@@ -42,7 +42,7 @@ public class HelixUpgradedFunc implements IModel {
         LinkedList<PolyLine3D> lines = new LinkedList<>();
         Vector3[] carcass = new Vector3[countOfTurns * (countOfPointsPerTurn + 1)];
 
-        int koef = clockwise? -1 : 1;
+        int koef = clockwise? 1 : -1;
 
         float currentZ = 0;
         float currentX;
@@ -62,8 +62,8 @@ public class HelixUpgradedFunc implements IModel {
             //внутренний цикл j отвечает за построение каждого витка
             for (int j = 0; j <= countOfPointsPerTurn; j++) {
                 percent = (float) (i * countOfPointsPerTurn + j) / carcass.length;
-                currentX = (float) (Math.cos(currentRad) * radius) * radiusFunc.complete(percent);
-                currentY = (float) (Math.sin(currentRad) * radius) * radiusFunc.complete(percent);
+                currentX = (float) (Math.cos(currentRad) * radius) * radiusFunc.complete(percent) + thickness;
+                currentY = (float) (Math.sin(currentRad) * radius) * radiusFunc.complete(percent) + thickness;
 
                 carcass[counter] = new Vector3(currentX, currentY, currentZ);
                 currentRad += radIncr;

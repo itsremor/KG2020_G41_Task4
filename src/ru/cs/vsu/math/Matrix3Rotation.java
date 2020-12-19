@@ -81,6 +81,8 @@ public class Matrix3Rotation {
     }
 
     public static float getAngleOZ(Vector3 v1, Vector3 v2){
+        if(v1.equals(v2)) return 0;
+
         float dx = Math.abs(v1.getX() - v2.getX());
         float dy = Math.abs(v1.getY() - v2.getY());
         float dz = Math.abs(v1.getZ() - v2.getZ());
@@ -89,6 +91,8 @@ public class Matrix3Rotation {
     }
 
     public static float getAngleOY(Vector3 v1, Vector3 v2){
+        if(v1.equals(v2)) return 0;
+
         float dx = Math.abs(v1.getX() - v2.getX());
         float dy = Math.abs(v1.getY() - v2.getY());
         float dz = Math.abs(v1.getZ() - v2.getZ());
@@ -97,11 +101,13 @@ public class Matrix3Rotation {
     }
 
     public static float getAngleOX(Vector3 v1, Vector3 v2){
+        if(v1.equals(v2)) return 0;
+
         float dx = Math.abs(v1.getX() - v2.getX());
         float dy = Math.abs(v1.getY() - v2.getY());
         float dz = Math.abs(v1.getZ() - v2.getZ());
 
-        return (float) Math.acos(dz / Math.sqrt(dz * dz + dy * dy));
+        return (float) Math.acos(dy / Math.sqrt(dz * dz + dy * dy));
     }
 
     public static Vector3 rotationOnX(Vector3 v, float angle){
@@ -127,7 +133,5 @@ public class Matrix3Rotation {
 
         return new Vector3(newX, newY, newZ);
     }
-
-    ;
 
 }

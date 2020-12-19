@@ -88,7 +88,7 @@ public class UserInterface extends JFrame {
                 float thickness = (float) (double) thicknessSpinner.getValue();
                 int countOfPointsPerTick = (int) countOfPointsSpinner.getValue();
 
-                drawPanel1.setHelix(new HelixUpgradedFunc(countOfTurns, countOfPointsPerTurn, 1,
+                drawPanel1.setHelix(new HelixUpgradedFunc(countOfTurns, countOfPointsPerTurn, radius,
                         step, thickness, countOfPointsPerTick, clockwiseValue, fRad, fStep));
                 drawPanel1.repaint();
             }

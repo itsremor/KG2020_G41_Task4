@@ -10,6 +10,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
+import functions.CosinusFunction;
+import functions.DefaultFunction;
+import functions.SinusFunction;
 import models.*;
 import ru.cs.vsu.CameraController;
 import ru.cs.vsu.draw.IDrawer;
@@ -29,7 +32,13 @@ public class DrawPanel extends JPanel
     private ScreenConverter sc;
     private Camera cam;
     private CameraController camController;
-    
+    private HelixUpgradedFunc helix;
+
+    public void setHelix(HelixUpgradedFunc helix) {
+        scene.getModelsList().clear();
+        scene.getModelsList().add(helix);
+    }
+
     public DrawPanel() {
         super();
         sc = new ScreenConverter(-1, 1, 2, 2, 1, 1);
@@ -38,16 +47,11 @@ public class DrawPanel extends JPanel
         scene = new Scene(Color.WHITE.getRGB());
         scene.showAxes();
 
-        /*
-        scene.getModelsList().add(new Parallelepiped(
-                new Vector3(-0.4f, -0.4f, -0.4f),
-                new Vector3(0.4f, 0.4f, 0.4f)
-        ));
-        */
+        helix = new HelixUpgradedFunc(3,6,1f,0.1f, 0.5f, 6, false,
+                new DefaultFunction(), new DefaultFunction());
 
-        //scene.getModelsList().add(new Helix(3, 45, 1f, 1.5f, 0.05f, 10, true));
-        //scene.getModelsList().add(new HelixUpgraded(2,18,1f,1f, 0.1f, 6, true));
-        scene.getModelsList().add(new HelixUpgradedPlus(5,36,1f,1f, 0.1f, 6, true, FuncTypes.COSINUS, FuncTypes.SINUS));
+
+        scene.getModelsList().add(helix);
 
         camController.addRepaintListener(this);
         addMouseListener(camController);
